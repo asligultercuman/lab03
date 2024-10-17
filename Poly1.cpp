@@ -18,7 +18,7 @@ string RemoveSpaces(const string& str) {
     return result;
 }
 
-PolyNode* CreatePoly(const char* expr) {
+PolyNode* CreatePoly( char* expr) {
 
     string input = RemoveSpaces(expr);
     istringstream stream(input);
@@ -88,32 +88,23 @@ PolyNode* CreatePoly(const char* expr) {
 
     return head;
 }
-
-void DeletePoly (PolyNode* poly) {
-      PolyNode* temp = poly;
-  PolyNode* nextNode = nullptr;
-
-
-  if (temp != nullptr) {
-      nextNode = temp->next;
-      delete temp;
-      temp = nextNode;
-  }
-
+void DeletePoly(PolyNode* poly) {
+    while (poly != nullptr) {
+        PolyNode* nextNode = poly->next;
+        delete poly;
+        poly = nextNode;
+    }
 }
-PolyNode* AddNode(PolyNode* head, double coef, int exp) {
-PolyNode* AddNode(PolyNode* head, double coefficient, int exponent){
-    // Yeni düğüm oluştur
-    PolyNode* newNode = new PolyNode;
-    newNode->coef = coefficient;
-    newNode->exp = exponent;
-    newNode->next = nullptr;
 
+// Function to add a node (coefficient, exponent) to polynomial
+PolyNode* AddNode(PolyNode* head, double coefficient, int exponent) {
+    PolyNode* newNode = new PolyNode(coefficient, exponent);
+    
     if (!head) {
         return newNode;
     }
 
-    // Polinoma uygun yere ekle (sıralı ekleme)
+    // Polinoma uygun yere ekle (sorted insertion)
     PolyNode* current = head;
     PolyNode* prev = nullptr;
 
@@ -122,24 +113,23 @@ PolyNode* AddNode(PolyNode* head, double coefficient, int exponent){
         current = current->next;
     }
 
-   
     if (current && current->exp == exponent) {
         current->coef += coefficient;
-        delete newNode;  
-    }
-    else {
+        delete newNode;  // No need for the new node if we're just updating an existing term
+    } else {
         if (prev) {
             prev->next = newNode;
-        }
-        else {
-            head = newNode;  
+        } else {
+            head = newNode;  // Insert at the head
         }
         newNode->next = current;
     }
 
     return head;
-} // end-AddNode
-}/*
+}
+
+ // end-AddNode
+/*
 PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
 
 }
