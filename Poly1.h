@@ -5,7 +5,7 @@
 using namespace std;
 
 string RemoveSpaces(const string& str);
-PolyNode* CreatePoly(const char* expr);
+PolyNode* CreatePoly( char* expr);
 /*
 void DeletePoly(PolyNode* poly);
 PolyNode* AddNode(PolyNode* head, double coef, int exp);
