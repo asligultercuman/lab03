@@ -148,10 +148,42 @@ PolyNode* AddNode(PolyNode* head, double coefficient, int exponent) {
 
 
  // end-AddNode
-/*
-PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
 
-}
+PolyNode *Add(PolyNode *poly1, PolyNode *poly2){
+PolyNode* add = nullptr;
+PolyNode*tail= nullptr;
+while(poly1 || poly2){
+    double coefficient=0;
+    int exponent=0;
+    if (poly1 && ( poly1->exp > poly2->exp)) {
+           
+            coefficient = poly1->coef;
+            exponent = poly1->exp;
+            poly1 = poly1->next;  
+        } else if (poly2 && ( poly2->exp > poly1->exp)) {
+           
+            coefficient = poly2->coef;
+            exponent = poly2->exp;
+            poly2 = poly2->next;  
+        } else {
+            
+            coefficient = poly1->coef + poly2->coef;
+            exponent = poly1->exp;
+            poly1 = poly1->next;  
+            poly2 = poly2->next;
+        }
+        if (coefficient != 0) {
+           PolyNode* newNode = new PolyNode{coefficient, exponent};
+            if (!add) {
+                add = tail = newNode; 
+            } else {
+                tail->next = newNode;  
+                tail = newNode;        
+            }
+        }
+    }
+    return add;
+}/* 
 PolyNode* Subtract(PolyNode* poly1, PolyNode* poly2) {
 
 }
