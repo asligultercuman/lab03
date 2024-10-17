@@ -104,29 +104,49 @@ PolyNode* AddNode(PolyNode* head, double coefficient, int exponent) {
         return newNode;
     }
 
-    // Polinoma uygun yere ekle (sorted insertion)
+    // Traverse the list to find the correct position
     PolyNode* current = head;
     PolyNode* prev = nullptr;
 
+    // Traverse the list until you find where to insert the new node
     while (current && current->exp > exponent) {
         prev = current;
         current = current->next;
     }
 
+    // If the exponents match, add the coefficients
     if (current && current->exp == exponent) {
+        // Debug output for tracking coefficient addition
+        
+        
         current->coef += coefficient;
-        delete newNode;  // No need for the new node if we're just updating an existing term
+
+        // If the result is zero, remove the node
+        if (current->coef == 0) {
+            // Remove the node since coefficient is now zero
+            if (prev) {
+                prev->next = current->next;
+            } else {
+                head = current->next;  // If it's the head node, move the head
+            }
+            delete current;
+        }
+
+        // Since we no longer need `newNode`, free the memory
+        delete newNode;
     } else {
+        // Otherwise, insert the new node in its correct position
         if (prev) {
             prev->next = newNode;
         } else {
-            head = newNode;  // Insert at the head
+            head = newNode;  // If inserting at the head
         }
         newNode->next = current;
     }
 
     return head;
 }
+
 
  // end-AddNode
 /*
