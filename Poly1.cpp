@@ -88,13 +88,49 @@ PolyNode* CreatePoly(const char* expr) {
 
     return head;
 }
-/*
+
 void DeletePoly (PolyNode* poly) {
 
 }
 PolyNode* AddNode(PolyNode* head, double coef, int exp) {
+PolyNode* AddNode(PolyNode* head, double coefficient, int exponent){
+    // Yeni düğüm oluştur
+    PolyNode* newNode = new PolyNode;
+    newNode->coef = coefficient;
+    newNode->exp = exponent;
+    newNode->next = nullptr;
 
-}
+    if (!head) {
+        return newNode;
+    }
+
+    // Polinoma uygun yere ekle (sıralı ekleme)
+    PolyNode* current = head;
+    PolyNode* prev = nullptr;
+
+    while (current && current->exp > exponent) {
+        prev = current;
+        current = current->next;
+    }
+
+   
+    if (current && current->exp == exponent) {
+        current->coef += coefficient;
+        delete newNode;  
+    }
+    else {
+        if (prev) {
+            prev->next = newNode;
+        }
+        else {
+            head = newNode;  
+        }
+        newNode->next = current;
+    }
+
+    return head;
+} // end-AddNode
+}/*
 PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
 
 }
