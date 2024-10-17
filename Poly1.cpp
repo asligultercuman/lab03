@@ -90,6 +90,15 @@ PolyNode* CreatePoly(const char* expr) {
 }
 
 void DeletePoly (PolyNode* poly) {
+      PolyNode* temp = poly;
+  PolyNode* nextNode = nullptr;
+
+
+  if (temp != nullptr) {
+      nextNode = temp->next;
+      delete temp;
+      temp = nextNode;
+  }
 
 }
 PolyNode* AddNode(PolyNode* head, double coef, int exp) {
