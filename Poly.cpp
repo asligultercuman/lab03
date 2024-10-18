@@ -257,10 +257,56 @@ PolyNode* Subtract(PolyNode* poly1, PolyNode* poly2) {
 // Multiplies poly1 and poly2 and returns the resulting polynomial
 // Computes: poly3 = poly1 * poly2 and returns poly3
 //
-PolyNode *Multiply(PolyNode *poly1, PolyNode *poly2){
-	// Fill this in
-	return NULL;
-} //end-Multiply
+PolyNode* Multiply(PolyNode* poly1, PolyNode* poly2) {
+    PolyNode* result = nullptr;  
+    PolyNode* tail = nullptr;    
+
+    
+    while (poly1) {
+        PolyNode* tempPoly2 = poly2;  
+        while (tempPoly2 != nullptr) {
+            
+            double coefficient = poly1->coef * tempPoly2->coef;
+            int exponent = poly1->exp + tempPoly2->exp;
+
+            if (coefficient != 0) {
+                PolyNode* newNode = new PolyNode(coefficient, exponent);
+                if (result == nullptr) {
+                    result = tail = newNode;  
+                } else {
+                    PolyNode* curr = result;
+                    PolyNode* prev = nullptr;
+                    bool multi = false;
+
+                    while (curr != nullptr && curr->exp > exponent) {
+                        prev = curr;
+                        curr = curr->next;
+                    }
+
+                    if (curr != nullptr && curr->exp == exponent) {
+                        curr->coef += coefficient;
+                        multi = true;
+                    }
+
+                    if (!multi) {
+                        if (prev == nullptr) {  
+                            newNode->next = result;
+                            result = newNode;
+                        } else {  
+                            newNode->next = curr;
+                            prev->next = newNode;
+                        }
+                    }
+                }
+            }
+
+            tempPoly2 = tempPoly2->next;  
+        }
+        poly1 = poly1->next;  
+    }
+
+    return result;
+}
 
 //-------------------------------------------------
 // Evaluates the polynomial at a particular "x" value and returns the result
