@@ -208,41 +208,46 @@ PolyNode *Add(PolyNode *poly1, PolyNode *poly2){
 // Subtracts poly2 from poly1 and returns the resulting polynomial
 // Computes: poly3 = poly1 - poly2 and returns poly3
 //
-PolyNode *Subtract(PolyNode *poly1, PolyNode *poly2){
+PolyNode* Subtract(PolyNode* poly1, PolyNode* poly2) {
 
-    PolyNode* head1 = nullptr;
-    PolyNode* head2 = nullptr;
-    PolyNode* result = nullptr;
+    PolyNode* head1 = poly1;
+    PolyNode* head2 = poly2;
+    PolyNode* result = nullptr;   
+    PolyNode* tail = nullptr;         
 
-    while (head1 != NULL || head2 != NULL) {
-        if (head1->exp == head2->exp) { //usleri esitse cikarma islemi yap
-            result->exp = head1->exp;
-            result->coef = head1->coef - head2->coef;
-        }
-        else if (head1->exp > head2->exp) {
-            result->coef = head1->coef;
-            result->exp = head1->exp;
-        }
-        else {
-            result->coef = (- 1) * head2->coef;
-            result->exp = head2->exp;
-        }
-        //her iki pointeri da ilerlet
-        head1 = head1->next;
-        head2 = head2->next;
-    }
-    if (head1 == NULL && head2 != NULL) { //birinci polinomun eleman sayisi daha azsa
-        while (head2 != NULL) {
-            result->coef = head2->coef;
-            result->exp = head2->exp;
+    while (head1 != nullptr || head2 != nullptr) {
+        PolyNode* newNode = new PolyNode(); // Yeni düğüm oluştur
+
+        if (head1 != nullptr && head2 != nullptr && head1->exp == head2->exp) { // Üsler eşitse çıkarma işlemi yap
+            newNode->exp = head1->exp;
+            newNode->coef = head1->coef - head2->coef;
+            head1 = head1->next;
             head2 = head2->next;
         }
-    }
-    else if (head1 != NULL && head2 == NULL) {
-        while (head1 != NULL) {
-            result->coef = (-1) * head1->coef;
-            result->exp = head1->exp;
+        else if (head1 != nullptr && (head2 == nullptr || head1->exp > head2->exp)) { // head1'deki üs büyükse
+            newNode->exp = head1->exp;
+            newNode->coef = head1->coef;
             head1 = head1->next;
+        }
+        else { // head2'deki üs büyükse
+            newNode->exp = head2->exp;
+            newNode->coef = -head2->coef;
+            head2 = head2->next;
+        }
+
+        // Eğer yeni düğümün katsayısı sıfır değilse sonucu listeye ekle
+        if (newNode->coef != 0) {
+            if (result == nullptr) {
+                result = newNode;
+                tail = result;
+            }
+            else {
+                tail->next = newNode;
+                tail = tail->next;
+            }
+        }
+        else {
+            delete newNode; // Katsayı sıfırsa bu düğümü iptal et
         }
     }
     return result;
