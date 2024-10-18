@@ -274,9 +274,30 @@ double Evaluate(PolyNode *poly, double x){
 // Computes the derivative of the polynomial and returns it
 // Ex: poly(x) = 3x^4 - 2x + 1-->Derivative(poly) = 12x^3 - 2
 //
-PolyNode *Derivative(PolyNode *poly){
-	// Fill this in
-	return NULL;
+PolyNode* Derivative(PolyNode* poly) {
+    PolyNode* head1 = poly;
+    PolyNode* result = nullptr;    
+    PolyNode* tail = nullptr;       
+
+    while (head1 != nullptr) {
+        if (head1->exp != 0) {  
+            PolyNode* newNode = new PolyNode();
+            newNode->exp = head1->exp - 1;
+            newNode->coef = head1->coef * head1->exp; 
+
+            if (result == nullptr) {
+                result = newNode;
+                tail = result;
+            }
+            else {
+                tail->next = newNode;
+                tail = tail->next;
+            }
+        }
+        head1 = head1->next;
+    }
+
+    return result;
 } //end-Derivative
 
 //-------------------------------------------------
