@@ -2,6 +2,8 @@
 #include "Poly.h"
 #include <sstream>
 using namespace std;
+#include <cmath>
+
 
 //-------------------------------------------------
 // Creates a polynomial from an expression.
