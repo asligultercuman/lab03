@@ -311,10 +311,14 @@ PolyNode* Multiply(PolyNode* poly1, PolyNode* poly2) {
 //-------------------------------------------------
 // Evaluates the polynomial at a particular "x" value and returns the result
 //
-double Evaluate(PolyNode *poly, double x){
-	// Fill this in
-	return 0;
-} //end-Evaluate
+double Evaluate(PolyNode* poly, double x) {
+    double result = 0;
+    while (poly != nullptr) {
+        result += poly->coef* pow(x, poly->exp);
+        poly = poly->next;  // Linked list'in sonraki düğümüne geç
+    }
+    return result;
+}//end-Evaluate
 
 //-------------------------------------------------
 // Computes the derivative of the polynomial and returns it
@@ -354,6 +358,55 @@ PolyNode* Derivative(PolyNode* poly) {
 // During evaluation, if "y" value does not fit on the screen,
 // then just skip it. Otherwise put a '*' char depicting the curve
 //
-void Plot(PolyNode *poly, int x1, int x2){
-	// Fill this in	
+void Plot(PolyNode* poly, int x1, int x2) {
+    const int maxScreenWidth = 79;  // max
+    const int screenHeight = 25;  // -12 ile +12 arasi
+
+    char screen[screenHeight][maxScreenWidth];
+    int screenWidth = abs(x2 - x1 + 1);
+
+    //Once bosluk ile dolduruyoruz
+    for (int i = 0; i < screenHeight; i++)
+        for (int j = 0; j < screenWidth; j++)
+            screen[i][j] = ' ';
+    
+    //orta noktayi bulma
+    int xAxis = screenHeight / 2;
+    int yAxis = -x1;              
+
+  
+    for (int i = 0; i < screenWidth; i++)
+        screen[xAxis][i] = '-';  
+
+    
+    if (yAxis >= 0 && yAxis < screenWidth) {
+        for (int i = 0; i < screenHeight; i++)
+            screen[i][yAxis] = '|'; 
+    }
+
+    for (int x = x1; x <= x2; x++) {
+        double y = Evaluate(poly, x);
+
+        if (y >= -12 && y <= 12) {
+            int screenX = x - x1;  
+            int screenY = xAxis - static_cast<int>(y);  
+
+            if (screenX >= 0 && screenX < screenWidth && screenY >= 0 && screenY < screenHeight) {
+                // y = 0 ise x ekseni ile cakismasin ya sadece '-','|' ya da sadece '*' yazilsin
+                if (screen[screenY][screenX] == '-')
+                    screen[screenY][screenX] = '*';
+                else if (screen[screenY][screenX] == '|')
+                    screen[screenY][screenX] = '*';
+                else
+                    screen[screenY][screenX] = '*';
+            }
+        }
+    }
+
+    // Grafigi yazdir
+    for (int i = 0; i < screenHeight; i++) {
+        for (int j = 0; j < screenWidth; j++)
+            printf("%c", screen[i][j]);
+            printf("\n");
+    }
 } //end-Plot
