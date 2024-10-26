@@ -93,7 +93,7 @@ string Infix2Postfix(string& s) {
 int EvaluatePostfixExpression(string& s) {
     stack<int> stack;
     string num;
-
+//string üzerinde dolaşmak için
     for (char ch : s) {
         if (isdigit(ch)) {
             num += ch; 
@@ -107,12 +107,12 @@ int EvaluatePostfixExpression(string& s) {
                 stack.push(stoi(num));
                 num.clear();
             }
-
+//stack icinden sayilar alinir
             int operand2 = stack.top();
             stack.pop();
             int operand1 = stack.top();
             stack.pop();
-
+//operator turune göre işlem yapilir
             if (ch == '+') {
                 stack.push(operand1 + operand2);
             } else if (ch == '-') {
