@@ -2,6 +2,7 @@
 #include <stack>
 #include <string>
 #include <cctype>
+#include <sstream>
 using namespace std;
 
 // Enum ile operator onceligi belirleme
@@ -86,9 +87,7 @@ string Infix2Postfix(string& s) {
 	}
 
 	return result;
-} // end-Infix2Postfix
-
-///----------------------------------------------------------------------------------
+} // end-Infix2Postfix----------------------------------------------------------------
 /// Given a string in post-fix notation, evaluates it and returns the result
 /// 
 int EvaluatePostfixExpression(string& s) {
